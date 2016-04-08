@@ -1,0 +1,21 @@
+﻿{
+  "version": "1.0.0-*",
+  "description": "IdentityServer4.Core.Services.MongoDB.Test Class Library",
+  "authors": [ "Fredrik Strandin" ],
+  "tags": [ "" ],
+  "projectUrl": "",
+  "licenseUrl": "",
+  "dependencies": {
+    "xunit": "2.1.0",
+    "xunit.runner.dnx": "2.1.0-rc1-build204",
+    "MongoDB.Driver": "2.2.3",
+    "IdentityServer4": "",
+    "IdentityServer4.Core.Services.MongoDB": ""
+  },
+  "commands": {
+    "test": "xunit.runner.dnx"
+  },  
+  "frameworks": {
+    "dnx451": { }
+  }
+}

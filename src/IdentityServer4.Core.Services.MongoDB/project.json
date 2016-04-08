@@ -1,0 +1,19 @@
+﻿{
+  "version": "1.0.0",
+  "description": "IdentityServer4.Core.Services.MongoDB Class Library",
+  "authors": [ "home" ],
+  "tags": [ "" ],
+  "projectUrl": "",
+  "licenseUrl": "",
+  "dependencies": {
+    "IdentityServer4": ""
+  },
+
+  "frameworks": {
+    "net451": {
+      "dependencies": {
+        "MongoDB.Driver": "2.2.3"
+      }
+    }
+  }
+}
