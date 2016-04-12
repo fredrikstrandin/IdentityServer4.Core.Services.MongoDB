@@ -28,25 +28,7 @@ namespace IdentityServer4.Core.Services.MongoDB
             _logger = logger;
             _database = database;
         }
-
-        ///// <summary>
-        ///// Initializes a new instance of the <see cref="MongoDBClientStore"/> class.
-        ///// </summary>
-        ///// <param name="clients">The clients.</param>
-        //public MongoDBClientStore(IEnumerable<Client> clients)
-        //{
-        //    foreach (Client client in clients)
-        //    {
-        //        Task<ReplaceOneResult> ret = _database.GetCollection<Client>(_collectionClient).ReplaceOneAsync(c => c.ClientId == client.ClientId,
-        //            client,
-        //            new UpdateOptions() { IsUpsert = true });
-
-        //        ret.Wait();
-
-        //        _logger.LogInformation($"Client {client.ClientId} is added.");
-        //    }
-        //}
-
+                
         /// <summary>
         /// Finds a client by id
         /// </summary>
