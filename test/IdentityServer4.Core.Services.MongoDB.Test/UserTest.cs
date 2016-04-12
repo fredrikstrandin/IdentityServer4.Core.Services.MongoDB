@@ -94,7 +94,7 @@ namespace IdentityServer4.Core.Services.MongoDB.Test
                         new Secret("secret".Sha256())
                     },
 
-                    Flow = Flows.ResourceOwner,
+                    AllowedGrantTypes = new string[] {  "ResourceOwner", "password" },
 
                     AllowRememberConsent = true,
 
@@ -118,7 +118,7 @@ namespace IdentityServer4.Core.Services.MongoDB.Test
                         new Secret("secret".Sha256())
                     },
 
-                    Flow = Flows.ResourceOwner,
+                    AllowedGrantTypes = new string[] {  "ResourceOwner" },
 
                     AllowedScopes = new List<string>
                     {
@@ -141,13 +141,8 @@ namespace IdentityServer4.Core.Services.MongoDB.Test
                         new Secret("secret".Sha256())
                     },
 
-                    Flow = Flows.Custom,
-
-                    AllowedCustomGrantTypes = new List<string>
-                    {
-                        "custom"
-                    },
-
+                    AllowedGrantTypes = new string[] {  "Custom" },
+                    
                     AllowedScopes = new List<string>
                     {
                         "api1", "api2"
@@ -165,7 +160,7 @@ namespace IdentityServer4.Core.Services.MongoDB.Test
                         new Secret("secret".Sha256())
                     },
 
-                    Flow = Flows.ResourceOwner,
+                    AllowedGrantTypes = new string[] {  "ResourceOwner" },
 
                     AllowedScopes = new List<string>
                     {
@@ -184,7 +179,8 @@ namespace IdentityServer4.Core.Services.MongoDB.Test
                     ClientName = "MVC Implicit",
                     ClientUri = "http://identityserver.io",
 
-                    Flow = Flows.Implicit,
+                    AllowedGrantTypes = new string[] {  "Implicit" },
+
                     RedirectUris = new List<string>
                     {
                         "http://localhost:44077/signin-oidc"
@@ -210,7 +206,8 @@ namespace IdentityServer4.Core.Services.MongoDB.Test
                     ClientName = "JavaScript OAuth 2.0 Client",
                     ClientUri = "http://identityserver.io",
 
-                    Flow = Flows.Implicit,
+                    AllowedGrantTypes = new string[] {  "Implicit" },
+
                     RedirectUris = new List<string>
                     {
                         "http://localhost:28895/index.html"
@@ -231,7 +228,8 @@ namespace IdentityServer4.Core.Services.MongoDB.Test
                     ClientName = "JavaScript OIDC Client",
                     ClientUri = "http://identityserver.io",
 
-                    Flow = Flows.Implicit,
+                    AllowedGrantTypes = new string[] {  "Implicit" },
+
                     RedirectUris = new List<string>
                     {
                         "http://localhost:7017/index.html",
