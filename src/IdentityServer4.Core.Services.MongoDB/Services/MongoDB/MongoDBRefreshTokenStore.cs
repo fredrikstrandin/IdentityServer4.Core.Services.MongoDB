@@ -58,7 +58,8 @@ namespace IdentityServer4.Core.Services.MongoDB
         /// <returns></returns>
         public Task<RefreshToken> GetAsync(string key)
         {
-            Task<MongoDBRefreshToken> find = _database.GetCollection<MongoDBRefreshToken>(_collectionRefreshToken).Find(p => p.key == key).FirstOrDefaultAsync();
+            Task<MongoDBRefreshToken> find = _database.GetCollection<MongoDBRefreshToken>(_collectionRefreshToken).Find(p => p.key == key)
+                .FirstOrDefaultAsync();
 
             find.Wait();
 

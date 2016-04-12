@@ -35,7 +35,10 @@ namespace IdentityServer4.Core.Services.MongoDB
         /// <returns>The permissions.</returns>
         public Task<IEnumerable<Consent>> LoadAllAsync(string subject)
         {
-            var query = _database.GetCollection<Consent>(_collectionConsent).Find(f => f.Subject == subject).ToListAsync();
+            var query = _database.GetCollection<Consent>(_collectionConsent).Find(f => f.Subject == subject)
+                .Project<Consent>(Builders<Consent>.Projection
+                                                .Exclude("_id"))
+                .ToListAsync();
 
             query.Wait();
 
@@ -50,7 +53,10 @@ namespace IdentityServer4.Core.Services.MongoDB
         /// <returns>The persisted consent.</returns>
         public Task<Consent> LoadAsync(string subject, string client)
         {
-            var query = _database.GetCollection<Consent>(_collectionConsent).Find(c => c.Subject == subject && c.ClientId == client).FirstOrDefaultAsync();
+            var query = _database.GetCollection<Consent>(_collectionConsent).Find(c => c.Subject == subject && c.ClientId == client)
+                .Project<Consent>(Builders<Consent>.Projection
+                                                .Exclude("_id"))
+                .FirstOrDefaultAsync();
 
             query.Wait();
 

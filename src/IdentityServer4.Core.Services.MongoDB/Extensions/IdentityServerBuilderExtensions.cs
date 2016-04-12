@@ -3,19 +3,19 @@
 
 using IdentityServer4.Core.Models;
 using IdentityServer4.Core.Services;
-using IdentityServer4.Core.Services.InMemory;
 using IdentityServer4.Core.Validation;
 using System.Collections.Generic;
 using IdentityServer4.Core.Services.MongoDB;
+using IdentityServer4.Core.Services.MongoDB.Models;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
     public static class IdentityServerBuilderExtensions
     {
-        public static IIdentityServerBuilder AddMongoDBUsers<TUser>(this IIdentityServerBuilder builder) where TUser : IMongoDBUser
-        {
-            builder.Services.AddTransient<IProfileService, MongoDBProfileService<TUser>>();
-            builder.Services.AddTransient<IResourceOwnerPasswordValidator, MongoDBResourceOwnerPasswordValidator<TUser>>();
+        public static IIdentityServerBuilder AddMongoDBUsers(this IIdentityServerBuilder builder)         {
+            builder.Services.AddTransient<IProfileService, MongoDBProfileService>();
+            builder.Services.AddTransient<IResourceOwnerPasswordValidator, MongoDBResourceOwnerPasswordValidator>();
 
             return builder;
         }
@@ -33,6 +33,16 @@ namespace Microsoft.Extensions.DependencyInjection
             builder.Services.AddTransient<IScopeStore, MongoDBScopeStore>();
 
             return builder;
-        }        
+        }
+
+        public static IServiceCollection AddMongoDBTransientStores(this IServiceCollection services)
+        {
+            services.TryAddSingleton<IAuthorizationCodeStore, MongoDBAuthorizationCodeStore>();
+            services.TryAddSingleton<IRefreshTokenStore, MongoDBRefreshTokenStore>();
+            services.TryAddSingleton<ITokenHandleStore, MongoDBTokenHandleStore>();
+            services.TryAddSingleton<IConsentStore, MongoDBConsentStore>();
+
+            return services;
+        }
     }
 }

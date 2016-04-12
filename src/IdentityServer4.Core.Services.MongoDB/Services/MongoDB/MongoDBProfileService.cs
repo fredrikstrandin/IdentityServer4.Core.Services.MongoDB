@@ -13,24 +13,25 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using MongoDB.Driver;
 using MongoDB.Bson;
+using IdentityServer4.Core.Services.MongoDB.Models;
 
 namespace IdentityServer4.Core.Services.MongoDB
 {
     /// <summary>
     /// In-memory user service
     /// </summary>
-    public class MongoDBProfileService<TUser> : IProfileService where TUser : IMongoDBUser
+    public class MongoDBProfileService : IProfileService 
     {
         private readonly string _collectionUser = "Users";
 
-        private readonly ILogger<MongoDBProfileService<TUser>> _logger;
+        private readonly ILogger<MongoDBProfileService> _logger;
         private readonly IMongoDatabase _database;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="InMemoryUserService"/> class.
+        /// Initializes a new instance of the <see cref="MongoDBProfileService"/> class.
         /// </summary>
         /// <param name="users">The users.</param>
-        public MongoDBProfileService(ILogger<MongoDBProfileService<TUser>> logger,
+        public MongoDBProfileService(ILogger<MongoDBProfileService> logger,
             IMongoDatabase database)
         {
             _logger = logger;
@@ -44,27 +45,33 @@ namespace IdentityServer4.Core.Services.MongoDB
         /// <returns></returns>
         public Task GetProfileDataAsync(ProfileDataRequestContext context)
         {
-            var query =
-                from u in _database.GetCollection<TUser>(_collectionUser).AsQueryable()
-                where u.Subject == new ObjectId(context.Subject.GetSubjectId())
-                select u;
-            var user = query.Single();
+            var subject = new ObjectId(context.Subject.GetSubjectId());
 
-            var claims = new List<Claim>{
+            var query =
+                from u in _database.GetCollection<MongoDBUser>(_collectionUser).AsQueryable()
+                where u.Subject == subject
+                select u;
+
+            var user = query.SingleOrDefault();
+
+            if (user != null)
+            {
+                var claims = new List<Claim>{
                 new Claim(JwtClaimTypes.Subject, user.Subject.ToString()),
             };
 
-            foreach (var item in user.Claims)
-            {
-                claims.Add(item);
-            }
-            
-            if (!context.AllClaimsRequested)
-            {
-                claims = claims.Where(x => context.RequestedClaimTypes.Contains(x.Type)).ToList();
-            }
+                foreach (var item in user.Claims)
+                {
+                    claims.Add(item);
+                }
 
-            context.IssuedClaims = claims;
+                if (!context.AllClaimsRequested)
+                {
+                    claims = claims.Where(x => context.RequestedClaimTypes.Contains(x.Type)).ToList();
+                }
+
+                context.IssuedClaims = claims;
+            }
 
             return Task.FromResult(0);
         }
@@ -79,11 +86,13 @@ namespace IdentityServer4.Core.Services.MongoDB
         {
             if (context.Subject == null) throw new ArgumentNullException("subject");
 
+            var subject = new ObjectId(context.Subject.GetSubjectId());
+
             var query =
-                from u in _database.GetCollection<TUser>(_collectionUser).AsQueryable()
+                from u in _database.GetCollection<MongoDBUser>(_collectionUser).AsQueryable()
                 where
-                    u.Subject == new ObjectId(context.Subject.GetSubjectId())
-                select u;
+                    u.Subject == subject
+                select new MongoDBUser() { Enabled = u.Enabled };
 
             var user = query.SingleOrDefault();
 

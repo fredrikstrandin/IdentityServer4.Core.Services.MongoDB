@@ -10,43 +10,43 @@ namespace IdentityServer4.Core.Services.MongoDB.Models
     {
         public MongoDBClaim(string type, string value)
         {
-            this.type = type;
-            this.value = value;
+            this.Type = type;
+            this.Value = value;
         }
 
         public MongoDBClaim(string type, string value, string valueType)
         {
-            this.type = type;
-            this.value = value;
-            this.valueType = valueType;
+            this.Type = type;
+            this.Value = value;
+            this.ValueType = valueType;
         }
 
         public MongoDBClaim(string type, string value, string valueType, string issuer)
         {
-            this.type = type;
-            this.value = value;
-            this.valueType = valueType;
-            this.issuer = issuer;
+            this.Type = type;
+            this.Value = value;
+            this.ValueType = valueType;
+            this.Issuer = issuer;
         }
         public MongoDBClaim(string type, string value, string valueType, string issuer, string originalIssuer)
         {
-            this.type = type;
-            this.value = value;
-            this.valueType = valueType;
-            this.issuer = issuer;
-            this.originalIssuer = originalIssuer;
+            this.Type = type;
+            this.Value = value;
+            this.ValueType = valueType;
+            this.Issuer = issuer;
+            this.OriginalIssuer = originalIssuer;
         }
 
 
-        public string type { get; set; }
-        public string value { get; set; }
-        public string valueType { get; set; }
-        public string issuer { get; set; }
-        public string originalIssuer { get; set; }
+        public string Type { get; set; }
+        public string Value { get; set; }
+        public string ValueType { get; set; }
+        public string Issuer { get; set; }
+        public string OriginalIssuer { get; set; }
 
         public static implicit operator Claim(MongoDBClaim claim)
         {
-            return new Claim(claim.type, claim.value, claim.valueType, claim.issuer, claim.originalIssuer);
+            return new Claim(claim.Type, claim.Value, claim.ValueType, claim.Issuer, claim.OriginalIssuer);
         }
     }
 }

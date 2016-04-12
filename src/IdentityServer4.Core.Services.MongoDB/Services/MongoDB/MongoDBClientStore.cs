@@ -17,7 +17,7 @@ namespace IdentityServer4.Core.Services.MongoDB
     /// </summary>
     public class MongoDBClientStore : IClientStore
     {
-        private const string _collectionClient = "Client";
+        private const string _collectionClient = "Clients";
 
         private readonly ILogger<MongoDBClientStore> _logger;
         private readonly IMongoDatabase _database;
@@ -29,23 +29,23 @@ namespace IdentityServer4.Core.Services.MongoDB
             _database = database;
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MongoDBClientStore"/> class.
-        /// </summary>
-        /// <param name="clients">The clients.</param>
-        public MongoDBClientStore(IEnumerable<Client> clients)
-        {
-            foreach (Client client in clients)
-            {
-                Task<ReplaceOneResult> ret = _database.GetCollection<Client>(_collectionClient).ReplaceOneAsync(c => c.ClientId == client.ClientId,
-                    client,
-                    new UpdateOptions() { IsUpsert = true });
+        ///// <summary>
+        ///// Initializes a new instance of the <see cref="MongoDBClientStore"/> class.
+        ///// </summary>
+        ///// <param name="clients">The clients.</param>
+        //public MongoDBClientStore(IEnumerable<Client> clients)
+        //{
+        //    foreach (Client client in clients)
+        //    {
+        //        Task<ReplaceOneResult> ret = _database.GetCollection<Client>(_collectionClient).ReplaceOneAsync(c => c.ClientId == client.ClientId,
+        //            client,
+        //            new UpdateOptions() { IsUpsert = true });
 
-                ret.Wait();
+        //        ret.Wait();
 
-                _logger.LogInformation($"Client {client.ClientId} is added.");
-            }
-        }
+        //        _logger.LogInformation($"Client {client.ClientId} is added.");
+        //    }
+        //}
 
         /// <summary>
         /// Finds a client by id
@@ -56,13 +56,27 @@ namespace IdentityServer4.Core.Services.MongoDB
         /// </returns>
         public Task<Client> FindClientByIdAsync(string clientId)
         {
-            var query = _database.GetCollection<Client>(_collectionClient).Find(f => f.ClientId == clientId && f.Enabled).SingleOrDefaultAsync();
+            try
+            {
+                _logger.LogInformation($"{clientId}");
 
-            query.Wait();
+                var query = _database.GetCollection<Client>(_collectionClient).Find(f => f.ClientId == clientId && f.Enabled)
+                .Project<Client>(Builders<Client>.Projection
+                                            .Exclude("_id"))
+                .SingleOrDefaultAsync();
 
-            _logger.LogDebug($"FindClientByIdAsync: clientId {clientId}, is found {query?.Result != null}");
+                query.Wait();
 
-            return Task.FromResult(query.Result);
+                _logger.LogDebug($"FindClientByIdAsync: clientId {clientId}, is found {query?.Result != null}");
+
+                return Task.FromResult(query.Result);
+
+            } catch (Exception ex)
+            {
+                _logger.LogCritical(ex.Message);
+
+                throw;
+            }
         }
     }
 }

@@ -41,12 +41,15 @@ namespace IdentityServer4.Core.Services.MongoDB
         /// <returns></returns>
         public Task<bool> IsOriginAllowedAsync(string origin)
         {
-            var query =
-                from client in _database.GetCollection<Client>(_collectionClients).AsQueryable()
-                from url in client.AllowedCorsOrigins
-                select url.GetOrigin();
+            //This need to known the client. 
+            //var query =
+            //    from client in _database.GetCollection<Client>(_collectionClients).AsQueryable()
+            //    from url in client.AllowedCorsOrigins
+            //    select url.GetOrigin();
 
-            var result = query.Contains(origin, StringComparer.OrdinalIgnoreCase);
+            //var result = query.Contains(origin, StringComparer.OrdinalIgnoreCase);
+
+            var result = true;
 
             if (result)
             {

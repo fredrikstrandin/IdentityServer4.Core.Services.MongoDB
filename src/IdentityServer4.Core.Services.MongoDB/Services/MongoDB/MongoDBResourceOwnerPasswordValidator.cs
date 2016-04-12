@@ -5,17 +5,18 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using MongoDB.Driver;
 using Microsoft.Extensions.DependencyInjection;
+using IdentityServer4.Core.Services.MongoDB.Models;
 
 namespace IdentityServer4.Core.Services.MongoDB
 {
-    public class MongoDBResourceOwnerPasswordValidator<TUser> : IResourceOwnerPasswordValidator where TUser : IMongoDBUser
+    public class MongoDBResourceOwnerPasswordValidator : IResourceOwnerPasswordValidator 
     {
         private readonly string _collectionUser = "Users";
 
-        private readonly ILogger<MongoDBResourceOwnerPasswordValidator<TUser>> _logger;
+        private readonly ILogger<MongoDBResourceOwnerPasswordValidator> _logger;
         private readonly IMongoDatabase _database;
         
-        public MongoDBResourceOwnerPasswordValidator(ILogger<MongoDBResourceOwnerPasswordValidator<TUser>> logger,
+        public MongoDBResourceOwnerPasswordValidator(ILogger<MongoDBResourceOwnerPasswordValidator> logger,
             IMongoDatabase database)
         {
             _logger = logger;
@@ -24,7 +25,8 @@ namespace IdentityServer4.Core.Services.MongoDB
 
         public Task<CustomGrantValidationResult> ValidateAsync(string userName, string password, ValidatedTokenRequest request)
         {
-            Task<TUser> find = _database.GetCollection<TUser>(_collectionUser).Find(p => p.Username == userName).FirstOrDefaultAsync();
+            Task<MongoDBUser> find = _database.GetCollection<MongoDBUser>(_collectionUser).Find(p => p.Username == userName)
+                .FirstOrDefaultAsync();
 
             find.Wait();
 
@@ -32,11 +34,11 @@ namespace IdentityServer4.Core.Services.MongoDB
             {
                 _logger.LogDebug($"ValidateAsync find user: {userName}");
 
-                TUser user = find.Result;
+                MongoDBUser user = find.Result;
 
-                string hashPassword = user.Password.GenerateSHA256Hash(user.Salt);
+                //string hashPassword = user.Password.GenerateSHA256Hash(user.Salt);
 
-                if (password == hashPassword)
+                if (password == user.Password)
                     return Task.FromResult(new CustomGrantValidationResult(user.Subject.ToString(), "password"));
                 else
                     _logger.LogDebug("Password did not match.");
