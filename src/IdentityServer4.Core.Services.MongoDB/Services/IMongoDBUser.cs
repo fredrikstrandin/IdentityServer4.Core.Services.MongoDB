@@ -72,6 +72,6 @@ namespace IdentityServer4.Core.Services.MongoDB
         /// <value>
         /// The claims.
         /// </value>
-        IEnumerable<MongoDBClaim> Claims { get; set; }        
+        IEnumerable<Claim> Claims { get; set; }        
     }
 }

@@ -40,6 +40,8 @@ namespace IdentityServer4.Core.Services.MongoDB.Test
         {
             //_database.CreateCollection("Users");
 
+            BsonSerializer.RegisterSerializationProvider(new ClaimProvider());
+            
             string salt = string.Empty;
             salt = salt.CreateSalt(34);
 
@@ -50,31 +52,31 @@ namespace IdentityServer4.Core.Services.MongoDB.Test
             var users = new List<MongoDBUser>
             {
                 new MongoDBUser{Subject = ObjectId.GenerateNewId(818727), Username = "alice", Password = "alice",
-                    Claims = new MongoDBClaim[]
+                    Claims = new Claim[]
                     {
-                        new MongoDBClaim(JwtClaimTypes.Name, "Alice Smith"),
-                        new MongoDBClaim(JwtClaimTypes.GivenName, "Alice"),
-                        new MongoDBClaim(JwtClaimTypes.FamilyName, "Smith"),
-                        new MongoDBClaim(JwtClaimTypes.Email, "AliceSmith@email.com"),
-                        new MongoDBClaim(JwtClaimTypes.EmailVerified, "true", ClaimValueTypes.Boolean),
-                        new MongoDBClaim(JwtClaimTypes.Role, "Admin"),
-                        new MongoDBClaim(JwtClaimTypes.Role, "Geek"),
-                        new MongoDBClaim(JwtClaimTypes.WebSite, "http://alice.com"),
-                        new MongoDBClaim(JwtClaimTypes.Address, @"{ 'street_address': 'One Hacker Way', 'locality': 'Heidelberg', 'postal_code': 69118, 'country': 'Germany' }", Constants.ClaimValueTypes.Json)
+                        new Claim(JwtClaimTypes.Name, "Alice Smith"),
+                        new Claim(JwtClaimTypes.GivenName, "Alice"),
+                        new Claim(JwtClaimTypes.FamilyName, "Smith"),
+                        new Claim(JwtClaimTypes.Email, "AliceSmith@email.com"),
+                        new Claim(JwtClaimTypes.EmailVerified, "true", ClaimValueTypes.Boolean),
+                        new Claim(JwtClaimTypes.Role, "Admin"),
+                        new Claim(JwtClaimTypes.Role, "Geek"),
+                        new Claim(JwtClaimTypes.WebSite, "http://alice.com"),
+                        new Claim(JwtClaimTypes.Address, @"{ 'street_address': 'One Hacker Way', 'locality': 'Heidelberg', 'postal_code': 69118, 'country': 'Germany' }", Constants.ClaimValueTypes.Json)
                     }
                 },
                 new MongoDBUser{Subject = ObjectId.GenerateNewId(88421113), Username = "bob", Password = "bob",
-                    Claims = new MongoDBClaim[]
+                    Claims = new Claim[]
                     {
-                        new MongoDBClaim(JwtClaimTypes.Name, "Bob Smith"),
-                        new MongoDBClaim(JwtClaimTypes.GivenName, "Bob"),
-                        new MongoDBClaim(JwtClaimTypes.FamilyName, "Smith"),
-                        new MongoDBClaim(JwtClaimTypes.Email, "BobSmith@email.com"),
-                        new MongoDBClaim(JwtClaimTypes.EmailVerified, "true", ClaimValueTypes.Boolean),
-                        new MongoDBClaim(JwtClaimTypes.Role, "Developer"),
-                        new MongoDBClaim(JwtClaimTypes.Role, "Geek"),
-                        new MongoDBClaim(JwtClaimTypes.WebSite, "http://bob.com"),
-                        new MongoDBClaim(JwtClaimTypes.Address, @"{ 'street_address': 'One Hacker Way', 'locality': 'Heidelberg', 'postal_code': 69118, 'country': 'Germany' }", Constants.ClaimValueTypes.Json)
+                        new Claim(JwtClaimTypes.Name, "Bob Smith"),
+                        new Claim(JwtClaimTypes.GivenName, "Bob"),
+                        new Claim(JwtClaimTypes.FamilyName, "Smith"),
+                        new Claim(JwtClaimTypes.Email, "BobSmith@email.com"),
+                        new Claim(JwtClaimTypes.EmailVerified, "true", ClaimValueTypes.Boolean),
+                        new Claim(JwtClaimTypes.Role, "Developer"),
+                        new Claim(JwtClaimTypes.Role, "Geek"),
+                        new Claim(JwtClaimTypes.WebSite, "http://bob.com"),
+                        new Claim(JwtClaimTypes.Address, @"{ 'street_address': 'One Hacker Way', 'locality': 'Heidelberg', 'postal_code': 69118, 'country': 'Germany' }", Constants.ClaimValueTypes.Json)
                     }
                 }
             };
@@ -320,12 +322,12 @@ namespace IdentityServer4.Core.Services.MongoDB.Test
                         Enabled = true,
                         Username = items[14],
                         Password = items[15],
-                        Claims = new MongoDBClaim[]
+                        Claims = new Claim[]
                         {
-                            new MongoDBClaim(JwtClaimTypes.Name, $"{items[4]} {items[6]}"),
-                            new MongoDBClaim(JwtClaimTypes.GivenName, items[6]),
-                            new MongoDBClaim(JwtClaimTypes.FamilyName, items[4]),
-                            new MongoDBClaim(JwtClaimTypes.Email, items[13])
+                            new Claim(JwtClaimTypes.Name, $"{items[4]} {items[6]}"),
+                            new Claim(JwtClaimTypes.GivenName, items[6]),
+                            new Claim(JwtClaimTypes.FamilyName, items[4]),
+                            new Claim(JwtClaimTypes.Email, items[13])
                         }
                     });
 

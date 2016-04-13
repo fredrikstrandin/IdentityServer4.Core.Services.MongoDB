@@ -27,7 +27,7 @@ namespace IdentityServer4.Core.Services.MongoDB.Models
 
         public string Username { get; set; }
 
-        public IEnumerable<MongoDBClaim> Claims { get; set; }
+        public IEnumerable<Claim> Claims { get; set; }
 
     }
 }

@@ -15,6 +15,7 @@ using IdentityServer4.Core.Services.MongoDB;
 using MongoDB.Driver;
 using IdSvrHost.UI.Login;
 using System.Diagnostics;
+using MongoDB.Bson.Serialization;
 
 namespace IdSvrHost2
 {
@@ -30,6 +31,8 @@ namespace IdSvrHost2
         public void ConfigureServices(IServiceCollection services)
         {
             var _client = new MongoClient();
+
+            BsonSerializer.RegisterSerializationProvider(new ClaimProvider());
 
             services.AddInstance<IMongoDatabase>(_client.GetDatabase("IdentityServer"));
 

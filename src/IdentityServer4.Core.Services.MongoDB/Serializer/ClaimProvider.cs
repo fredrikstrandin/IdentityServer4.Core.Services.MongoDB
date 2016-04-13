@@ -33,7 +33,8 @@ namespace IdentityServer4.Core.Services.MongoDB
             string valueType = context.Reader.ReadString();
             string issuer = context.Reader.ReadString();
             string originalIssuer = context.Reader.ReadString();
-            
+
+            context.Reader.ReadEndDocument();
 
             return new Claim(type, value, valueType, issuer, originalIssuer);
         }
