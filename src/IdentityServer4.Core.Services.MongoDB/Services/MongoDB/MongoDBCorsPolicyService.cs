@@ -39,28 +39,31 @@ namespace IdentityServer4.Core.Services.MongoDB
         /// </summary>
         /// <param name="origin">The origin.</param>
         /// <returns></returns>
-        public Task<bool> IsOriginAllowedAsync(string origin)
+        public async Task<bool> IsOriginAllowedAsync(string origin)
         {
-            //This need to known the client. 
+            return await Task.FromResult(true);
+
+            ////This need to known the client. 
             //var query =
             //    from client in _database.GetCollection<Client>(_collectionClients).AsQueryable()
-            //    from url in client.AllowedCorsOrigins
-            //    select url.GetOrigin();
+            //    //from url in client.AllowedCorsOrigins
+            //    select client.AllowedCorsOrigins;
 
-            //var result = query.Contains(origin, StringComparer.OrdinalIgnoreCase);
+            //var urls = query.ToList();
 
-            var result = true;
+            //var origins = urls.Select(x => x.GetOrigin()).Where(x => x != null).Distinct();
 
-            if (result)
-            {
-                _logger.LogInformation("Client list checked and origin: {0} is allowed", origin);
-            }
-            else
-            {
-                _logger.LogInformation("Client list checked and origin: {0} is not allowed", origin);
-            }
-            
-            return Task.FromResult(result);
+            //var result = origins.Contains(origin, StringComparer.OrdinalIgnoreCase);
+
+            //if (result)
+            //{
+            //    _logger.LogInformation("Client list checked and origin: {0} is allowed", origin);
+            //} else
+            //{
+            //    _logger.LogInformation("Client list checked and origin: {0} is not allowed", origin);
+            //}
+
+            //return await Task.FromResult(result);
         }
     }
 }

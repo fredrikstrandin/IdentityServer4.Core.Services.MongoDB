@@ -1,7 +1,8 @@
 {
   "projects": [
     "src",
-    "test"
+    "test",
+    "C:\\GitSource\\Repos\\IdentityServer4\\src"
   ],
   "sdk": {
     "version": "1.0.0-rc1-update1"

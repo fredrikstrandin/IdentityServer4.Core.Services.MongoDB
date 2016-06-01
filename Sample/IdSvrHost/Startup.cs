@@ -35,14 +35,12 @@ namespace IdSvrHost2
             BsonSerializer.RegisterSerializationProvider(new ClaimProvider());
 
             services.AddInstance<IMongoDatabase>(_client.GetDatabase("IdentityServer"));
-
-            var cert = new X509Certificate2(Path.Combine(_environment.ApplicationBasePath, "idsrv4test.pfx"), "idsrv3test");
-
+            
             services.AddMongoDBTransientStores();
 
             var builder = services.AddIdentityServer(options =>
             {
-                options.SigningCertificate = cert;
+                options.SigningCertificate = new X509Certificate2(Path.Combine(_environment.ApplicationBasePath, "idsrv4test.pfx"), "idsrv3test"); 
             });
 
             builder.AddMongoDBUsers();

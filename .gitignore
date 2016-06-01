@@ -254,3 +254,4 @@ paket-files/
 # JetBrains Rider
 .idea/
 *.sln.iml
+/test/IdentityServer4.Core.Services.MongoDB.Test/Persondata.csv

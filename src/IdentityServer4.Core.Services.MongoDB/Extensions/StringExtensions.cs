@@ -29,6 +29,17 @@ namespace Microsoft.Extensions.DependencyInjection
 
             return ByteArrayNextString(hash);
         }
+        private static string ByteArrayNextString(byte[] ba)
+        {
+            StringBuilder hex = new StringBuilder(ba.Length * 2);
+
+            foreach (byte b in ba)
+            {
+                hex.AppendFormat("{0:x2}", b);
+            }
+
+            return hex.ToString();
+        }
 
         public static string GetOrigin(this string url)
         {
@@ -49,16 +60,5 @@ namespace Microsoft.Extensions.DependencyInjection
             return null;
         }
 
-        private static string ByteArrayNextString(byte[] ba)
-        {
-            StringBuilder hex = new StringBuilder(ba.Length * 2);
-
-            foreach (byte b in ba)
-            {
-                hex.AppendFormat("{0:x2}", b);
-            }
-
-            return hex.ToString();
-        }
     }
 }

@@ -96,11 +96,11 @@ namespace IdentityServer4.Core.Services.MongoDB.Test
                         new Secret("secret".Sha256())
                     },
 
-                    AllowedGrantTypes = new string[] {  "ResourceOwner", "password" },
+                    AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
 
                     AllowRememberConsent = true,
 
-                    AllowedCorsOrigins = new List<string>() { "www.dn.se", "www.test.se" },
+                    AllowedCorsOrigins = new List<string>() { "http://www.dn.se", "http://www.test.se" },
 
                     AllowedScopes = new List<string>
                     {
@@ -120,7 +120,7 @@ namespace IdentityServer4.Core.Services.MongoDB.Test
                         new Secret("secret".Sha256())
                     },
 
-                    AllowedGrantTypes = new string[] {  "ResourceOwner" },
+                    AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
 
                     AllowedScopes = new List<string>
                     {
@@ -162,7 +162,7 @@ namespace IdentityServer4.Core.Services.MongoDB.Test
                         new Secret("secret".Sha256())
                     },
 
-                    AllowedGrantTypes = new string[] {  "ResourceOwner" },
+                    AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
 
                     AllowedScopes = new List<string>
                     {
@@ -181,7 +181,7 @@ namespace IdentityServer4.Core.Services.MongoDB.Test
                     ClientName = "MVC Implicit",
                     ClientUri = "http://identityserver.io",
 
-                    AllowedGrantTypes = new string[] {  "Implicit" },
+                    AllowedGrantTypes = GrantTypes.Code,
 
                     RedirectUris = new List<string>
                     {
@@ -208,7 +208,7 @@ namespace IdentityServer4.Core.Services.MongoDB.Test
                     ClientName = "JavaScript OAuth 2.0 Client",
                     ClientUri = "http://identityserver.io",
 
-                    AllowedGrantTypes = new string[] {  "Implicit" },
+                    AllowedGrantTypes = GrantTypes.Implicit,
 
                     RedirectUris = new List<string>
                     {
@@ -230,7 +230,7 @@ namespace IdentityServer4.Core.Services.MongoDB.Test
                     ClientName = "JavaScript OIDC Client",
                     ClientUri = "http://identityserver.io",
 
-                    AllowedGrantTypes = new string[] {  "Implicit" },
+                    AllowedGrantTypes = GrantTypes.Implicit,
 
                     RedirectUris = new List<string>
                     {
@@ -304,6 +304,8 @@ namespace IdentityServer4.Core.Services.MongoDB.Test
         {
             string line;
 
+            BsonSerializer.RegisterSerializationProvider(new ClaimProvider());
+
             // Read the file and display it line by line.
             using (System.IO.StreamReader file =
                new System.IO.StreamReader("Persondata.csv"))
@@ -324,7 +326,7 @@ namespace IdentityServer4.Core.Services.MongoDB.Test
                         Password = items[15],
                         Claims = new Claim[]
                         {
-                            new Claim(JwtClaimTypes.Name, $"{items[4]} {items[6]}"),
+                            new  Claim(JwtClaimTypes.Name, $"{items[4]} {items[6]}"),
                             new Claim(JwtClaimTypes.GivenName, items[6]),
                             new Claim(JwtClaimTypes.FamilyName, items[4]),
                             new Claim(JwtClaimTypes.Email, items[13])
@@ -332,7 +334,7 @@ namespace IdentityServer4.Core.Services.MongoDB.Test
                     });
 
                     
-                    if (users.Count() > 500)
+                    if (users.Count() > 5000)
                     {
                         _database.GetCollection<MongoDBUser>("Users").InsertManyAsync(users);
 
